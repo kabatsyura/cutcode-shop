@@ -1,0 +1,7 @@
+services:
+  laravel.test:
+    volumes:
+      - .:/var/www/html
+    environment:
+      - SAIL_XDEBUG_MODE=develop,debug
+      - SAIL_XDEBUG_CONFIG="client_host=host.docker.internal"
