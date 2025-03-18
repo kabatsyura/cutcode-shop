@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Stringable;
 
 class Brand extends Model
 {
@@ -15,7 +14,7 @@ class Brand extends Model
     protected $fillable = [
         'slug',
         'title',
-        'thumbnail'
+        'thumbnail',
     ];
 
     protected static function boot()
@@ -23,7 +22,7 @@ class Brand extends Model
         parent::boot();
 
         self::creating(function (Brand $brand) {
-            $brand->slug = $brand  ->slug ?? str($brand->title)->slug();
+            $brand->slug = $brand->slug ?? str($brand->title)->slug();
         });
     }
 

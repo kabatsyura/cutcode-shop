@@ -3,44 +3,49 @@
 namespace App\Providers;
 
 use Carbon\CarbonInterval;
+use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Connection;
-use Illuminate\Foundation\Http\Kernel;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
-    public function register(): void
-    {
-        //
-    }
+    public function register(): void {}
 
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
-        // NOTE: helpfull in cases, when we forget include Eager loading
-        // and solve N+1 problem
-        Model::preventLazyLoading(! app()->isProduction());
-        // NOTE: call Exception in cases, when we want to save smthng without fillable
-        Model::preventSilentlyDiscardingAttributes(! app()->isProduction());
+        Model::shouldBeStrict(!app()->isProduction());
 
-        DB::whenQueryingForLongerThan(500, function(Connection $connection) {
-            logger()
-                ->channel('telegram')
-                ->debug('whenQueryingForLongerThan:' . $connection->query()->toSql());
-        });
+        // NOTE: where we call lambda functions and don't use $this we can add 'static' and improve velocity
+        if (app()->isProduction()) {
+            DB::whenQueryingForLongerThan(CarbonInterval::seconds(5), static function (Connection $connection) {
+                logger()
+                    ->channel('telegram')
+                    ->debug('whenQueryingForLongerThan:' . $connection->totalQueryDuration());
+            });
 
-        $kernel = app(Kernel::class);
-        $kernel->whenRequestLifecycleIsLongerThan(CarbonInterval::seconds(4), function () {
-            logger()
-                ->channel('telegram')
-                ->debug('whenRequestLifecycleIsLongerThan:' . request()->url());
-        });
+            DB::listen(static function (QueryExecuted $query) {
+                if ($query->time > 500) {
+                    logger()
+                        ->channel('telegram')
+                        ->debug('Query is executed more than need:' . $query->sql, $query->bindings);
+                }
+            });
+
+            $kernel = app(Kernel::class);
+            $kernel->whenRequestLifecycleIsLongerThan(CarbonInterval::seconds(4), static function () {
+                logger()
+                    ->channel('telegram')
+                    ->debug('whenRequestLifecycleIsLongerThan:' . request()->url());
+            });
+        }
     }
 }

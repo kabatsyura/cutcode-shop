@@ -22,9 +22,10 @@ return new class extends Migration
                 ->default(0);
 
             $table->foreignIdFor(Brand::class)
+                ->nullable()
                 ->constrained() // NOTE: add key for brand
                 ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+                ->nullOnDelete();
 
             $table->timestamps();
         });
@@ -36,7 +37,7 @@ return new class extends Migration
     public function down(): void
     {
         if (app()->isLocal()) {
-             Schema::dropIfExists('products');
+            Schema::dropIfExists('products');
         }
     }
 };

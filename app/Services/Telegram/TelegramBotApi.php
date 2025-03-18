@@ -12,7 +12,7 @@ final class TelegramBotApi
 
     public static function sendMessage(string $token, int $chatId, string $textMessage): void
     {
-        Http::get(self::  HOST . $token . '/sendMessage', [
+        Http::get(self::HOST . $token . '/sendMessage', [
             'chat_id' => $chatId,
             'text' => $textMessage,
         ]);

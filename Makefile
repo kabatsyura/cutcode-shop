@@ -7,6 +7,10 @@ stop:
 tinker:
 	./vendor/bin/sail artisan tinker
 
+lint-fix:
+	composer exec php-cs-fixer fix -- --diff --dry-run -v
+	# php vendor/bin/php-cs-fixer fix --dry-run -v
+
 migrate:
 	./vendor/bin/sail artisan migrate
 
