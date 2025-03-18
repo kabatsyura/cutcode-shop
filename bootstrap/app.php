@@ -12,7 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->group('web', [
-            'throttle:global',
+            'throttle:global' ,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

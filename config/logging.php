@@ -1,5 +1,6 @@
 <?php
 
+use App\Logging\Telegram\TelegramLoggerFactory;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -125,6 +126,16 @@ return [
 
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
+        ],
+
+        // NOTE: you should add new bot to the channel or group
+        // then recieve result->my_chat->chat->id and insert to the 'chat_id'
+        'telegram' => [
+            'driver' => 'custom',
+            'via' => TelegramLoggerFactory::class,
+            'level' => env('LOG_LEVEL', 'debug'),
+            'chat_id' => -1002664130765,
+            'token' => '6964108249:AAFl58xyIX6cL7SaEmS1PpX8Zyh9JzeVaUI',
         ],
 
     ],

@@ -28,6 +28,6 @@ install-starter:
 	composer require laravel/telescope
 	./vendor/bin/sail telescope:install
 	./vendor/bin/sail migrate
-    npm install -D taillwindcss
-    npm install @tailwindcss/line-clamp
-    npm install sass
+	npm install -D taillwindcss
+	npm install @tailwindcss/line-clamp
+	npm install sass
