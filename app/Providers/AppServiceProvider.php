@@ -26,17 +26,11 @@ class AppServiceProvider extends ServiceProvider
 
         // NOTE: where we call lambda functions and don't use $this we can add 'static' and improve velocity
         if (app()->isProduction()) {
-            DB::whenQueryingForLongerThan(CarbonInterval::seconds(5), static function (Connection $connection) {
-                logger()
-                    ->channel('telegram')
-                    ->debug('whenQueryingForLongerThan:' . $connection->totalQueryDuration());
-            });
-
             DB::listen(static function (QueryExecuted $query) {
-                if ($query->time > 500) {
+                if ($query->time > 1000) {
                     logger()
                         ->channel('telegram')
-                        ->debug('Query is executed more than need:' . $query->sql, $query->bindings);
+                        ->debug('Query is executed more than 1sec:' . $query->sql, $query->bindings);
                 }
             });
 
