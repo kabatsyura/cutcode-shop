@@ -20,7 +20,7 @@
 //     plugins: [forms],
 // };
 module.exports = {
-    content: ["./resources/views /*.blade.php}"], // NOTE: changed all blades files
+    content: ["./resources/**/*.blade.php"], // NOTE: changed all blades files
     darkMode: 'media',
     theme: {
       screens: {
