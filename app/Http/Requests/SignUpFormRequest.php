@@ -5,9 +5,11 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
+use Tests\RequestFactories\SignUpFormRequestFactory;
 
 class SignUpFormRequest extends FormRequest
 {
+    public static $factory = SignUpFormRequestFactory::class;
     /**
      * Determine if the user is authorized to make this request.
      */

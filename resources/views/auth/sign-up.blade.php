@@ -1,8 +1,8 @@
 @extends('layouts.auth')
 
-@section('title', 'Вход в аккаунт')
+@section('title', 'Регистрация')
 @section('content')
-    <x-forms.auth-forms title='Вход в аккаунт' action="{{ route('store') }}" method="POST">
+    <x-forms.auth-forms title='Регистрация' action="{{ route('store') }}" method="POST">
         @csrf
         <x-forms.text-input name="name" value="{{ old('name') }}" type="text" placeholder="Имя" required="true" :isError="$errors->has('name')" />
 
@@ -44,7 +44,7 @@
         <x-slot:socialAuth>
             <ul class="space-y-3 my-2">
                 <li>
-                    <a href="{{ route('auth.github ') }}"
+                    <a href="{{ route('auth.github') }}"
                         class="relative flex items-center h-14 px-12 rounded-lg border border-[#A07BF0] bg-white/20 hover:bg-white/20 active:bg-white/10 active:translate-y-0.5">
                         <svg class="shrink-0 absolute left-4 w-5 sm:w-6 h-5 sm:h-6" xmlns="http://www.w3.org/2000/svg"
                             fill="currentColor" viewBox="0 0 20 20">

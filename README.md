@@ -24,3 +24,11 @@ php artisan app:install
 ```
 make up
 ```
+
+4. Make copy .env and .env.testing from .env.example
+
+5. If you want to start testing the app, please create environment by the command:
+
+```
+make prepare-test
+```
