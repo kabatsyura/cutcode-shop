@@ -23,6 +23,11 @@ class Product extends Model
         'thumbnail',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+    }
+
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);

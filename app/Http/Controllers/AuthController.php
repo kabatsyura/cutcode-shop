@@ -119,8 +119,8 @@ class AuthController extends Controller
         $user = User::query()->updateOrCreate([
             'github_id' => $githubUser->id,
         ], [
-            'name' => $githubUser->name,
-            'email' => $githubUser->email,
+            'name' => $githubUser->name ?? $githubUser->getEmail(),
+            'email' => $githubUser->getEmail(),
             'password' => bcrypt(str()->random(10))
         ]);
 
