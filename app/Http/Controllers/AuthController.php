@@ -17,8 +17,9 @@ use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
-    public function index(): View
+    public function index(): View|RedirectResponse
     {
+        flash()->info('Test');
         return view('auth.index');
     }
 
@@ -38,9 +39,12 @@ class AuthController extends Controller
             $request->only('email')
         );
 
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with(['message' => __($status)])
-            : back()->withErrors(['email' => __($status)]);
+        if($status === Password::RESET_LINK_SENT) {
+            flash()->info(__($status));
+            return back();
+        }
+
+        return back()->withErrors(['email' => __($status)]);
     }
 
     public function signIn(SignInFormRequest $request): RedirectResponse
@@ -102,9 +106,12 @@ class AuthController extends Controller
             }
         );
 
-        return $status === Password::PasswordReset
-            ? redirect()->route('login')->with('status', __($status))
-            : back()->withErrors(['email' => [__($status)]]);
+        if($status === Password::PASSWORD_RESET) {
+            flash()->info(__($status));
+            return back();
+        }
+
+        return back()->withErrors(['email' => __($status)]);
     }
 
     public function authGithub()

@@ -6,9 +6,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('/login', 'index')->name('login');
-    Route::post('/login', 'signIn')->name('signIn');
+    Route::post('/login', 'signIn')
+        ->middleware('throttle:auth')->name('signIn');
     Route::get('/sign-up', 'signUp')->name('signUp');
-    Route::post('/sign-up', 'store')->name('store');
+    Route::post('/sign-up', 'store')
+        ->middleware('throttle:auth')->name('store');
     Route::get('/forgot-password', 'forgot')
         ->middleware('guest')
         ->name('password.request');
@@ -47,4 +49,3 @@ Route::get('/', HomeController::class)->name('home');
 
 // require __DIR__ . '/auth.php';
 
-// https://github.com/login/oauth/authorize?client_id=Ov23lixDFlcDtev4QOL9&redirect_uri=https%3A%2F%2Fshop.kabatsyura.ru%2Fauth%2Fgithub%2Fcallback&scope=user%3Aemail&response_type=code&state=DKSigqocOtQyOY83BsMwMOyVpeZyKU35XZ2QZw6K
