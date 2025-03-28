@@ -3,12 +3,16 @@
 namespace Tests\Feature\App\HTTP\Controllers;
 
 use App\Events\NewRegistered;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\SignInController;
+use App\Http\Controllers\Auth\SignUpController;
 use App\Http\Controllers\AuthController;
 use App\Http\Requests\SignInFormRequest;
 use App\Http\Requests\SignUpFormRequest;
 use App\Listeners\SendEmailNewUserListener;
-use App\Models\User;
 use App\Notifications\NewUserNotification;
+use Database\Factories\UserFactory;
+use Domain\Auth\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
@@ -23,16 +27,16 @@ class AuthControllerTest extends TestCase
     #[Test]
     public function indexTest(): void
     {
-        $this->get(action([AuthController::class, 'index']))
+        $this->get(action([SignInController::class, 'page']))
             ->assertOk()
             ->assertSee('Вход в аккаунт')
-            ->assertViewIs('auth.index');
+            ->assertViewIs('auth.login');
     }
 
     #[Test]
     public function signUpTest(): void
     {
-        $this->get(action([AuthController::class, 'signUp']))
+        $this->get(action([SignUpController::class, 'page']))
             ->assertOk()
             ->assertSee('Регистрация')
             ->assertViewIs('auth.sign-up');
@@ -41,9 +45,9 @@ class AuthControllerTest extends TestCase
     #[Test]
     public function forgotTest(): void
     {
-        $this->get(action([AuthController::class, 'forgot']))
+        $this->get(action([ForgotPasswordController::class, 'page']))
             ->assertOk()
-            ->assertViewIs('auth.forgo t-password');
+            ->assertViewIs('auth.forgot-password');
     }
 
     #[Test]
@@ -51,7 +55,7 @@ class AuthControllerTest extends TestCase
     {
         $password = '11112222';
 
-        $user = User::factory()->create([
+        $user = UserFactory::new()->create([
             'email' => 'test@crmme.ru',
             'password' => bcrypt($password),
         ]);
@@ -61,7 +65,7 @@ class AuthControllerTest extends TestCase
             'password' => $password,
         ]);
 
-        $response = $this->post(action([AuthController::class, 'signIn']), $request);
+        $response = $this->post(action([SignInController::class, 'handle']), $request);
 
         $response->assertValid()
             ->assertRedirect(route('home'));
@@ -72,11 +76,12 @@ class AuthControllerTest extends TestCase
     #[Test]
     public function logoutTest(): void
     {
-        $user = User::factory()->create([
+        $user = UserFactory::new()->create([
             'email' => 'test@crmme.ru'
         ]);
 
-        $response = $this->actingAs($user)->delete(action([AuthController::class, 'logout']));
+        $response = $this->actingAs($user)
+            ->delete(action([SignInController::class, 'logOut']));
         $response->assertRedirect();
 
         $this->assertGuest();
@@ -89,6 +94,7 @@ class AuthControllerTest extends TestCase
         Notification::fake();
 
         $body = SignUpFormRequest::factory()->create([
+            'email' => 'test@ya.ru',
             'password' => '12345678',
             'password_confirmation' => '12345678',
         ]);
@@ -101,7 +107,7 @@ class AuthControllerTest extends TestCase
         );
 
         $response = $this->post(
-            uri: action([AuthController::class, 'store']),
+            uri: action([SignUpController::class, 'handle']),
             data: $body
         );
 
