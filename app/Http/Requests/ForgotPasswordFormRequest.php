@@ -23,7 +23,15 @@ class ForgotPasswordFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email:dns'],
+            'email' => ['required', 'email:rfc,dns', 'exists:users,email'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'email.email' => 'Введите валидный email',
+            'email.exists' => 'Пользователь с таким email не найден',
         ];
     }
 }
