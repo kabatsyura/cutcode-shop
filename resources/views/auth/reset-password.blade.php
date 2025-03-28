@@ -1,39 +1,39 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
+@extends('layouts.auth')
+@section('title', 'Восстановление пароля')
+@section('content')
+    <x-forms.auth- forms title='Восстановление пароля' action="{{ route('password.update') }}" method="POST">
         @csrf
+        <x-forms.text-input type="hidden" name="token" value="{{ $token }}" />
+        <x-forms.text-input name="email" value="{{ request('email') }}" type="email" placeholder="E-mail" required="true"
+            :isError="$errors->has('email')" />
 
-        <!-- Password Reset Token -->
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+        @error('email')
+            <x-forms.error>
+                {{ $message }}
+            </x-forms.error>
+        @enderror
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+        <x-forms.text-input name="password" type="password" placeholder="Пароль" required="true" :isError="$errors->has('password')" />
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+        @error('password')
+            <x-forms.error>
+                {{ $message }}
+            </x-forms.error>
+        @enderror
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+        <x-forms.text-input name="password_confirmation" type="password" placeholder="Подтвердите пароль" required="true"
+            :isError="$errors->has('password_confirmation')" />
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
+        @error('password_confirmation')
+            <x-forms.error>
+                {{ $message }}
+            </x-forms.error>
+        @enderror
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+        <x-forms.primary-button>
+            Обновить пароль
+        </x-forms.primary-button>
+        <x-slot:socialAuth></x-slot:socialAuth>
+        <x-slot:buttons></x-slot:buttons>
+    </x-forms.auth-forms>
+@endsection

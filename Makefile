@@ -26,6 +26,19 @@ down:
 test:
 	./vendor/bin/sail artisan test
 
+prepare-test:
+	echo "Preparing test environment..."
+	./vendor/bin/sail up -d
+	./vendor/bin/sail exec mysql \
+		mysql -u root -ppassword -e " \
+			CREATE DATABASE IF NOT EXISTS cutcode_shop_test; \
+			GRANT ALL PRIVILEGES ON cutcode_shop_test.* TO 'sail'@'%'; \
+			FLUSH PRIVILEGES; \
+		"
+	./vendor/bin/sail artisan migrate:fresh --env=testing
+	SEEDS_IMPORT=1 ./vendor/bin/sail artisan db:seed --env=testing
+	@echo "✓ Test environment ready!"
+
 # NOTE: for me, what I've installed
 install-starter:
 	composer require barryvdh/laravel-debugbar --dev

@@ -2,12 +2,16 @@
 
 namespace App\Providers;
 
+use App\Events\NewRegistered;
+use App\Listeners\SendEmailNewUserListener;
+use App\Notifications\NewUserNotification;
 use Carbon\CarbonInterval;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -41,5 +45,7 @@ class AppServiceProvider extends ServiceProvider
                     ->debug('whenRequestLifecycleIsLongerThan:' . request()->url());
             });
         }
+        Event::listen(NewRegistered::class, [SendEmailNewUserListener::class, 'handle']);
+        // Event::listen(NewRegistered::class, NewUserNotification::class);
     }
 }
