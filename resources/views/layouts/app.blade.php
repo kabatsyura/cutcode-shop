@@ -4,26 +4,26 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#1E1F43">
+    <meta name="msapplication-TileColor" content="#1E1F43">
+    <meta name="theme-color" content="#1E1F43">
     <title>@yield('title', env('APP_NAME'))</title>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-    <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/sass/main.sass', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased">
-    @if ($message = flash()->get())
-        <div class="{{ $message->class() }} p-5">
-            {{ $message->message() }}
+<body>
+    @include('shared.flash')
+    @include('shared.header')
+    <main class="py-16 lg:py-20">
+        <div class="container">
+            @yield('content')
         </div>
-    @endif
-
-    @yield('content')
+    </main>
+    @include('shared.footer')
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 </body>
 
 </html>
