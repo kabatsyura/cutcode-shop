@@ -47,7 +47,7 @@ class Product extends Model
     {
         $query->where('on_home_page', true)
             ->orderBy('sorting')
-            ->limit(6);
+            ->limit(8);
     }
 
     protected function thumbnailDir(): string
