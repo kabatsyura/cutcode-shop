@@ -13,6 +13,8 @@ use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use Services\Telegram\TelegramBotApi;
+use Services\Telegram\TelegramBotApiContract;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::shouldBeStrict(!app()->isProduction());
+
+        $this->app->bind(TelegramBotApiContract::class, TelegramBotApi::class);
 
         // NOTE: where we call lambda functions and don't use $this we can add 'static' and improve velocity
         if (app()->isProduction()) {
