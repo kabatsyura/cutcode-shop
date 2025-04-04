@@ -3,7 +3,6 @@
 namespace Tests\Feature\App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\SignInController;
 use App\Http\Controllers\HomeController;
 use Database\Factories\UserFactory;
 use Domain\Auth\Models\User;

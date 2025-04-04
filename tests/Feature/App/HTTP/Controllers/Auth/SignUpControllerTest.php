@@ -4,7 +4,6 @@ namespace Tests\Feature\App\Http\Controllers\Auth;
 
 use App\Events\NewRegistered;
 use App\Http\Controllers\Auth\SignUpController;
-use App\Http\Requests\SignUpFormRequest;
 use App\Listeners\SendEmailNewUserListener;
 use App\Notifications\NewUserNotification;
 use Database\Factories\UserFactory;
