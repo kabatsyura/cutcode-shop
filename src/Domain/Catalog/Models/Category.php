@@ -1,12 +1,18 @@
 <?php
 
-namespace App\Models;
+namespace Domain\Catalog\Models;
 
-use App\Traits\Models\HasSlug;
+use App\Models\Product;
+use Domain\Catalog\Collections\CategoryCollection;
+use Domain\Catalog\QueryBuilders\CategoryQueryBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Support\Traits\Models\HasSlug;
 
+/**
+ * @method  static Category|CategoryQueryBuilder query()
+ */
 class Category extends Model
 {
     /** @use HasFactory<\Database\Factories\CategoryFactory> */
@@ -16,6 +22,8 @@ class Category extends Model
     protected $fillable = [
         'slug',
         'title',
+        'on_home_page',
+        'sorting'
     ];
 
     protected static function boot()
@@ -26,5 +34,15 @@ class Category extends Model
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class);
+    }
+
+    public function newEloquentBuilder($query)
+    {
+        return new CategoryQueryBuilder($query);
+    }
+
+    public function newCollection(array $models = [])
+    {
+        return new CategoryCollection($models);
     }
 }

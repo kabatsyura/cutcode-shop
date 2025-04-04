@@ -2,10 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Brand;
-use App\Models\Category;
 use App\Models\Product;
-use App\Models\User;
+use Database\Factories\BrandFactory;
+use Database\Factories\CategoryFactory;
+use Database\Factories\UserFactory;
+use Domain\Catalog\Models\Brand;
+use Domain\Catalog\Models\Category;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,16 +18,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
+        UserFactory::new()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
 
-        Brand::factory(20)->create();
+        BrandFactory::new()->count(20)->create();
 
-        Category::factory(10)
+        CategoryFactory::new()->count(10)
             ->has(Product::factory(rand(3, 7)))
             ->create();
     }

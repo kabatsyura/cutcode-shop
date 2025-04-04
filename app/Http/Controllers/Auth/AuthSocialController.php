@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Domain\Auth\Models\User;
 use DomainException;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Throwable;
 
@@ -27,15 +28,15 @@ class AuthSocialController extends Controller
         }
         $githubUser = Socialite::driver($driver)->user();
 
-        $user = User::query()->updateOrCreate([
-            $driver .  '_id' => $githubUser->id,
+        $user = User::updateOrCreate([
+            $driver .  '_id' => $githubUser->getId(),
         ], [
-            'name' => $githubUser->name ?? $githubUser->getEmail(),
+            'name' => $githubUser->getName() ?? $githubUser->getEmail(),
             'email' => $githubUser->getEmail(),
             'password' => bcrypt(str()->random(10))
         ]);
 
-        auth()->login($user);
+        Auth::login($user);
 
         return redirect()
             ->intended(route('home'));
