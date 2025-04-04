@@ -1,10 +1,10 @@
 <?php
 
-namespace Domain\Auth\Providers;
+namespace Domain\Catalog\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
-class AuthServiceProvider extends ServiceProvider
+class CatalogServiceProvider extends ServiceProvider
 {
     protected $policies = [];
     /**
@@ -12,9 +12,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->register(
-            ActionServiceProvider::class
-        );
+        $this->app->register(ActionServiceProvider::class);
     }
 
     /**
@@ -22,6 +20,5 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->registerPolicies();
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 
 class ActionServiceProvider extends ServiceProvider
 {
-  public array $bindings = [
-    RegisterNewUserContract::class => RegisterNewUserAction::class,
-  ];
+    public array $bindings = [
+        RegisterNewUserContract::class => RegisterNewUserAction::class,
+    ];
 }
