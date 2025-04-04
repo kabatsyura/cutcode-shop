@@ -13,10 +13,10 @@ final class BrandViewModel
 
     public function homePage(): Collection|array
     {
-        return Cache::rememberForever('brand_home_page', function () {
-            return Brand::query()
-                ->homePage()
-                ->get();
-        });
+        return Brand::query()
+            ->homePage()
+            ->get();
+        // return Cache::rememberForever('brand_home_page', function () {
+        // });
     }
 }
