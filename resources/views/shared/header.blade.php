@@ -14,7 +14,8 @@
                         value="{{ request('s') }}"
                         type="search"
                         class="w-full h-12 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
-                        placeholder="Поиск..." required>
+                        placeholder="Поиск..."
+                    >
                     <button type="submit" class="shrink-0 w-12 !h-12 !px-0 btn btn-pink">
                         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 52 52">
                             <path

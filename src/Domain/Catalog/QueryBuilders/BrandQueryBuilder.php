@@ -8,7 +8,7 @@ final class BrandQueryBuilder extends Builder
 {
     public function homePage(): BrandQueryBuilder
     {
-        return $this->select(['id', 'title', 'slug'])
+        return $this->select(['id', 'title', 'slug', 'thumbnail'])
             ->where('on_home_page', true)
             ->orderBy('sorting')
             ->limit(6);

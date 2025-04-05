@@ -12,12 +12,11 @@ class HomeController extends Controller
     public function __invoke(): View
     {
         $categories = CategoryViewModel::make()->homePage();
+        $brands = BrandViewModel::make()->homePage();
 
         $products = Product::query()
             ->homePage()
             ->get();
-
-        $brands = BrandViewModel::make()->homePage();
 
         return view('index', compact(
             'categories',

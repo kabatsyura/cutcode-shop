@@ -23,6 +23,8 @@ class CatalogController extends Controller
             ->has('products')
             ->get();
 
+        // dd(request('s'));
+
         $products = Product::query()
             ->select(['id', 'title', 'slug', 'price', 'thumbnail'])
             ->when(request('s'), function (Builder $query) {
