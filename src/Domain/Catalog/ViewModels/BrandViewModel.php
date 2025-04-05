@@ -15,8 +15,8 @@ final class BrandViewModel
     {
         return Cache::rememberForever('brand_home_page', function () {
             return Brand::query()
-                ->homePage()
-                ->get();
+            ->homePage()
+            ->get();
         });
     }
 }
