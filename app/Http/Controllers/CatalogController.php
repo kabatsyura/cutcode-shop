@@ -17,12 +17,6 @@ class CatalogController extends Controller
             ->has('products')
             ->get();
 
-
-        $brands = Brand::query()
-            ->select(['id', 'title'])
-            ->has('products')
-            ->get();
-
         $products = Product::query()
             ->select(['id', 'title', 'slug', 'price', 'thumbnail'])
             ->when(request('s'), function (Builder $query) {
@@ -43,7 +37,6 @@ class CatalogController extends Controller
         return view('catalog.index', [
             'categories' => $categories,
             'products' => $products,
-            'brands' => $brands,
             'category' => $category
         ]);
     }
