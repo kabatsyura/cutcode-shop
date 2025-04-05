@@ -30,6 +30,7 @@ class RefreshCommand extends Command
             return self::FAILURE;
         }
 
+
         Storage::deleteDirectory('public/images/products');
         Storage::deleteDirectory('public/images/brands');
 
@@ -37,6 +38,7 @@ class RefreshCommand extends Command
             '--seed' => true,
         ]);
 
+        $this->call('cache:clear');
 
         return self::SUCCESS;
     }
