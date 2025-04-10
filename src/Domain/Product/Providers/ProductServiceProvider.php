@@ -1,10 +1,10 @@
 <?php
 
-namespace Domain\Catalog\Providers;
+namespace Domain\Product\Providers;
 
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
-class CatalogServiceProvider extends ServiceProvider
+class ProductServiceProvider extends ServiceProvider
 {
     protected $policies = [];
     /**

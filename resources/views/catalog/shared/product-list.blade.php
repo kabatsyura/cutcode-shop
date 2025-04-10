@@ -10,11 +10,13 @@
                 {{ $item->title }}
             </a>
         </h3>
-        <ul class="space-y-1 mt-4 text-xss">
-            @foreach ($item->json_properties as $property => $value)
-                <li class="flex justify-between text-body"><strong>{{ $property }}:</strong> {{ $value }}</li>
-            @endforeach
-        </ul>
+        @if($item->json_properties)
+            <ul class="space-y-1 mt-4 text-xss">
+                @foreach ($item->json_properties as $property => $value)
+                    <li class="flex justify-between text-body"><strong>{{ $property }}:</strong> {{ $value }}</li>
+                @endforeach
+            </ul>
+        @endif
         <div class="mt-auto pt-6">
             <div class="mb-3 text-sm font-semibold">{{ $item->price }}</div>
             <div class="flex flex-wrap items-center gap-4">

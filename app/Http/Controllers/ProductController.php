@@ -11,7 +11,6 @@ class ProductController extends Controller
     public function __invoke(?Product $product): View
     {
         $product->load(['optionValues.option']);
-        $options = $product->optionValues->mapToGroups(fn ($item) => [$item->option->title => $item]);
         $viewedProducts = Product::query()
             ->where(function (Builder $query) use ($product) {
                 if (null !== session('also')) {
@@ -27,7 +26,7 @@ class ProductController extends Controller
 
         return view('product.show', [
             'product' => $product,
-            'options' => $options,
+            'options' => $product->optionValues->keyValues(),
             'viewedProducts' => $viewedProducts,
         ]);
     }

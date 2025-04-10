@@ -6,6 +6,7 @@ use App\Jobs\ProductJsonPropertiesJob;
 use Domain\Catalog\Facade\Sorter;
 use Domain\Catalog\Models\Brand;
 use Domain\Catalog\Models\Category;
+use Domain\Product\QueryBuilders\ProductQueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -73,28 +74,13 @@ class Product extends Model
         return $this->belongsToMany(OptionValue::class);
     }
 
-    public function scopeHomePage(Builder $query)
-    {
-        $query->where('on_home_page', true)
-            ->orderBy('sorting')
-            ->limit(8);
-    }
-
     protected function thumbnailDir(): string
     {
         return 'products';
     }
 
-    public function scopeFiltered(Builder $query)
+    public function newEloquentBuilder($query)
     {
-        return app(Pipeline::class)
-            ->send($query)
-            ->through(filters())
-            ->thenReturn();
-    }
-
-    public function scopeSorted(Builder $query)
-    {
-        Sorter::run($query);
+        return new ProductQueryBuilder($query);
     }
 }
