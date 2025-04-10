@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Domain\Product\Models;
 
 use App\Jobs\ProductJsonPropertiesJob;
 use Domain\Catalog\Facade\Sorter;
