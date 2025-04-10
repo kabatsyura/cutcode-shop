@@ -14,11 +14,14 @@ class ProductController extends Controller
         $options = $product->optionValues->mapToGroups(fn ($item) => [$item->option->title => $item]);
         $viewedProducts = Product::query()
             ->where(function (Builder $query) use ($product) {
-                $query
-                    ->whereIn('id', session('also'))
-                    ->where('id', '!=', $product->id);
+                if (null !== session('also')) {
+                    $query
+                        ->whereIn('id', session('also'))
+                        ->where('id', '!=', $product->id);
+                }
             })
             ->get();
+
 
         session()->put('also.' . $product->id, $product->id);
 
