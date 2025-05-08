@@ -10,18 +10,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('cart_item_option_value', function (Blueprint $table) {
+        Schema::create('cart_item_option_value', function (Blueprint $table) {
             $table->id();
 
             $table->foreignIdFor(CartItem::class)
                 ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
 
             $table->foreignIdFor(OptionValue::class)
                 ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
 
             $table->timestamps();
         });
