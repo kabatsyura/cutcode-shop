@@ -5,6 +5,7 @@ namespace Domain\Cart;
 use Domain\Cart\Contracts\CartIdentityStorageContract;
 use Domain\Cart\Models\Cart;
 use Domain\Cart\Models\CartItem;
+use Domain\Cart\StorageIdentities\FakeIdentityStorage;
 use Domain\Product\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -25,6 +26,11 @@ final class CartManager
         return str('cart_' . $this->identityStorage->get())
             ->slug('_')
             ->value();
+    }
+
+    public static function fake(): void
+    {
+        app()->bind(CartIdentityStorageContract::class, FakeIdentityStorage::class);
     }
 
     private function forgetCache(): void
@@ -105,7 +111,11 @@ final class CartManager
 
     public function truncate(): void
     {
-        $this->get()?->delete();
+        if ($this->get()) {
+            $this->get()->delete();
+        }
+
+        $this->forgetCache();
     }
 
     public function items(): Collection

@@ -1,9 +1,9 @@
 <?php
 
 
-namespace App\Http\Controllers;
+namespace Tests\Feature\App\Http\Controllers;
 
-
+use App\Http\Controllers\CatalogController;
 use Database\Factories\BrandFactory;
 use Database\Factories\ProductFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;

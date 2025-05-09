@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -7,9 +8,6 @@ use Sentry\Laravel\Integration;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        // using: function () {
-        //     (new RouteServiceProvider(app()))->boot();
-        // },
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
@@ -31,4 +29,8 @@ return Application::configure(basePath: dirname(__DIR__))
             flash()->alert($e->getMessage());
             return back();
         });
-    })->create();
+    })
+    ->withSchedule(function (Schedule $schedule) {
+        $schedule->command('model:prune')->mondays();
+    })
+    ->create();

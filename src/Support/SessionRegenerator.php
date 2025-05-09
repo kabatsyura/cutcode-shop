@@ -9,19 +9,21 @@ use Closure;
 
 final class SessionRegenerator
 {
-    public static function run(Closure $callback = null)
+    public static function run(Closure $callback = null): void
     {
-        $old = request()->session()->getId();
-        request()->session()->invalidate();
-        request()->session()->regenerateToken();
+        $old = session()->getId();
 
-        if (! is_null($callback)) {
+        session()->invalidate();
+
+        session()->regenerateToken();
+
+        if (!is_null($callback)) {
             $callback();
         }
 
         event(new AfterSessionRegenerated(
             $old,
-            request()->session()->getId()
+            session()->getId()
         ));
     }
 }
