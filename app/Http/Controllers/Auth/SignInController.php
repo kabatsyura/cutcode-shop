@@ -7,6 +7,7 @@ use App\Http\Requests\SignInFormRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Support\SessionRegenerator;
 
 class SignInController extends Controller
 {
@@ -17,25 +18,25 @@ class SignInController extends Controller
 
     public function handle(SignInFormRequest $request): RedirectResponse
     {
-        if (! Auth::attempt($request->validated())) {
+        if (!Auth::once($request->validated())) {
             return back()->withErrors([
-                'email' => 'Ваш email введен не верно, либо не был ранее создан.',
-            ]);
+                'email' => 'The provided credentials do not match our records.',
+            ])->onlyInput('email');
         }
 
-        $request->session()->regenerate();
+        SessionRegenerator::run(fn () => Auth::login(
+            Auth::user()
+        ));
 
-        return redirect()->intended(route('home'));
+        return redirect()
+            ->intended(route('home'));
     }
 
     public function logOut(): RedirectResponse
     {
-        Auth::logout();
+        SessionRegenerator::run(fn () => Auth::logout());
 
-        request()->session()->invalidate();
-
-        request()->session()->regenerateToken();
-
-        return redirect()->route('home');
+        return redirect()
+            ->route('home');
     }
 }
