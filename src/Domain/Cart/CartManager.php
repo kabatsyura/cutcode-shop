@@ -89,6 +89,13 @@ final class CartManager
         $this->forgetCache();
     }
 
+    public function updateStorageId(string $old, string $current)
+    {
+        Cart::query()
+            ->where('storage_id', $old)
+            ->update($this->storedData($current));
+    }
+
     public function delete(CartItem $item): void
     {
         $item->delete();

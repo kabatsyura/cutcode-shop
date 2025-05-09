@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\AfterSessionRegenerated;
 use App\Events\NewRegistered;
 use App\Listeners\SendEmailNewUserListener;
 use App\Notifications\NewUserNotification;
 use Carbon\CarbonInterval;
+use Domain\Cart\CartManager;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Events\QueryExecuted;
@@ -51,5 +53,9 @@ class AppServiceProvider extends ServiceProvider
         }
         Event::listen(NewRegistered::class, [SendEmailNewUserListener::class, 'handle']);
         // Event::listen(NewRegistered::class, NewUserNotification::class);
+
+        Event::listen(AfterSessionRegenerated::class, function (AfterSessionRegenerated $event) {
+            app(CartManager::class)->updateStorageId($event->old, $event->current);
+        });
     }
 }
