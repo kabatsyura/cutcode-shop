@@ -7,8 +7,7 @@ namespace Domain\Order\Processes;
 use App\Events\OrderCreated;
 use Domain\Order\Models\Order;
 use DomainException;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Pipeline;
+use Illuminate\Pipeline\Pipeline;
 use Support\Transaction;
 
 final class OrderProcess
@@ -36,8 +35,8 @@ final class OrderProcess
                 event(new OrderCreated($order));
             },
             function (\Throwable $e) {
-                Log::log(1, $e->getMessage());
-                throw new DomainException('Что-то пошло не так. Обратитесь в тех. поддержку');
+                throw new DomainException($e->getMessage());
+                // throw new DomainException('Что-то пошло не так. Обратитесь в тех. поддержку');
             }
         );
     }
