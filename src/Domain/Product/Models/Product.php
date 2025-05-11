@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Carbon;
 use Support\Casts\PriceCast;
 use Support\Traits\Models\HasSlug;
@@ -35,7 +34,8 @@ class Product extends Model
         'on_home_page',
         'sorting',
         'text',
-        'json_properties'
+        'json_properties',
+        'quantity'
     ];
 
     protected $casts = [

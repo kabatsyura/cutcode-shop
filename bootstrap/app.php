@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\SeoMiddleware;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -20,14 +21,17 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
+            SeoMiddleware::class,
             'throttle:global',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         Integration::handles($exceptions);
+
         $exceptions->renderable(function (DomainException $e) {
             flash()->alert($e->getMessage());
-            return back();
+
+            return session()->previousUrl() ? back() : redirect()->route('home');
         });
     })
     ->withSchedule(function (Schedule $schedule) {

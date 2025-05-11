@@ -10,7 +10,7 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#1E1F43">
     <meta name="msapplication-TileColor" content="#1E1F43">
     <meta name="theme-color" content="#1E1F43">
-    <title>@yield('title', env('APP_NAME'))</title>
+    <title>@yield('title', $seo_title ?? env('APP_NAME'))</title>
     @vite(['resources/css/app.css', 'resources/sass/main.sass', 'resources/js/app.js'])
 </head>
 
